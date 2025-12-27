@@ -10,8 +10,10 @@ def play_spotify_music(query: Optional[str] = "") -> dict:
         return {"status": "error"}
 
     url = "https://open.spotify.com/search/" + query.replace(" ", "%20")
+    print(url)
     return {
         "status": "success",
         "song": query,
         "url": url
     }
+
