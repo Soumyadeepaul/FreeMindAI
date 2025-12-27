@@ -89,30 +89,36 @@ def prompt2():
 
     FORMAT RULES (STRICT):
 
-    A. If calling findNearestPsychiatrists → ONLY output:
+     A. If calling findNearestPsychiatrists → ONLY output:
 
-    
-    "tool": "findNearestPsychiatrists",
-    "arguments": 
+    {{
+      "tool": "findNearestPsychiatrists",
+      "arguments": {{
         "lat": 00.00,
         "lng": 00.00
+      }}
+    }}
 
     B. If calling Spotify music tool → ONLY output:
 
-    
-    "tool": "play_spotify_music",
-    "arguments": 
+    {{
+      "tool": "play_spotify_music",
+      "arguments": {{
         "query": "<recommended song name>"
-    
+      }}
+    }}
+
     C. If calling schedule_appointment → ONLY output:
 
-    
-    "tool": "schedule_appointment",
-    "arguments": 
-        "user_id": {email},
-        "counselling_id": {counsellingID},
+    {{
+      "tool": "schedule_appointment",
+      "arguments": {{
+        "user_id": "{email}",
+        "counselling_id": "{counsellingID}",
         "start_time": "YYYY-MM-DD HH:MM",
         "end_time": "YYYY-MM-DD HH:MM"
+      }}
+    }}
     
 
     D. If ASKING for music consent → ONLY output plain text:
@@ -229,4 +235,5 @@ def prompt5():
 
         Provide your response NOW.
         """
+
     return temp
