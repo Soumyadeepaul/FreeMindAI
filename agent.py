@@ -105,6 +105,7 @@ def agent(question, id, counsellingID):
                     "agent",
                     f"Recommended song: {tool_result.get('song')}"
                 )
+                print(tool_result)
                 return tool_result
 
             elif name == "schedule_appointment":
@@ -180,4 +181,5 @@ def medicalReportAgent(id, counsellingID):
         "previousChat": history,
         "format_instructions": output_parser.get_format_instructions()
     })
+
 
