@@ -3,8 +3,7 @@ from langchain.tools import tool
 from typing import Optional
 @tool
 def play_spotify_music(query: Optional[str] = "") ->dict:
-    if not query:
-        return "No song selected"
+    
     """
     Opens Spotify with the given search query or Spotify URL.
     Example inputs:
@@ -12,6 +11,8 @@ def play_spotify_music(query: Optional[str] = "") ->dict:
         - "https://open.spotify.com/track/XYZ"
         - "lofi beats playlist"
     """
+    if not query:
+        return "No song selected"
     # If user passed a URL, open directly
     if query.startswith("http"):
         webbrowser.open(query)
@@ -24,3 +25,4 @@ def play_spotify_music(query: Optional[str] = "") ->dict:
 
 
 # play_spotify_music("Oh Khuda")
+
