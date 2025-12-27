@@ -58,6 +58,7 @@ def agent(question, id, counsellingID):
     id = id or ""
     counsellingID = counsellingID or ""
     date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(question,id,counsellingID,date_time)
 
     # -------- bind tools --------
     tools = [
@@ -73,10 +74,10 @@ def agent(question, id, counsellingID):
 
     extracted = extract_chain.invoke({
         "designation": "Psychiatrist",
-        "question": question,
-        "email": id,
-        "counsellingID": counsellingID,
-        "dateTime": date_time
+        "question": "HI i am fine",
+        "email": "paulsoumyadeep344@gmail.com",
+        "counsellingID": "1",
+        "dateTime": "2025-12-27 22:12"
     })
 
     # ------------------------------------------------------------------
@@ -165,3 +166,4 @@ def medicalReportAgent(id, counsellingID):
         "previousChat": history,
         "format_instructions": output_parser.get_format_instructions()
     })
+
