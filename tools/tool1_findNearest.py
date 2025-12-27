@@ -9,9 +9,6 @@ def findNearestPsychiatrists(
     lng: float,
     limit: Optional[int] = 3
 ) -> list:
-    if limit==None:
-        limit=3
-    #doc script -> must there for tools
     """
     It returns the nearest psychiatrists around the given latitude and longitude.
     Output is a list of dicts: {name, distance_km, address}.
@@ -52,6 +49,7 @@ def findNearestPsychiatrists(
 
 # psy = findNearestPsychiatrists(22.5726, 88.3639)  # Kolkata
 # print(psy)
+
 
 
 
