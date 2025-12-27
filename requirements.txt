@@ -1,0 +1,9 @@
+streamlit
+langchain
+langchain-community
+langchain-huggingface
+huggingface_hub
+openai
+sqlite-utils
+reportlab
+python-dotenv
