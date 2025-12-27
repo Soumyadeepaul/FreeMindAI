@@ -65,7 +65,7 @@ def agent(question,id,counsellingID):
     # Run extraction LLM (this may or may not call a tool)
     extract_prompt = ChatPromptTemplate.from_template(Prompts.prompt2())
     extract_chain = extract_prompt | llm_with_tool
-    extracted = extract_chain.invoke({"designation": "Psychiatrist","question": question,"email":id, "counsellingID" : counsellingID, "dateTime":datetime.now()})
+    extracted = extract_chain.invoke({"designation": "Psychiatrist","question": question,"email":id, "counsellingID" : counsellingID, "dateTime": datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
     print(id)
     print(extracted)
     # Detect tool calls
@@ -199,3 +199,4 @@ def medicalReportAgent(id,counsellingID):
     })
 
     return parsed_output
+
