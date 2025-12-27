@@ -26,7 +26,7 @@ def schedule_appointment(
     """
     Schedule a counselling appointment and send a calendar invite email.
     """
-     if not user_id or not start_time:
+    if not user_id or not start_time:
         return "Unable to schedule appointment"
 
     # ---- Create ICS ----
@@ -71,4 +71,5 @@ def schedule_appointment(
         server.send_message(msg)
 
     return "Appointment email sent successfully, appointment date and time starts from {start_time} and ends at {end_time}"
+
 
