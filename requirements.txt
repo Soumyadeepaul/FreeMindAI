@@ -1,9 +1,32 @@
 streamlit
+
+# LangChain core
 langchain
 langchain-community
+langchain-core
+
+# Gemini (Google Generative AI)
+langchain-google-genai
+google-generativeai
+
+# Tools & embeddings
+huggingface-hub
 langchain-huggingface
-huggingface_hub
-openai
-sqlite-utils
-reportlab
+sentence-transformers
+
+# Vector DB
+pinecone-client
+
+# Utilities
+requests
+geopy
 python-dotenv
+
+# Email & calendar
+ics
+
+# PDF generation
+reportlab
+
+# Data models
+pydantic
