@@ -41,7 +41,7 @@ def agentPrerequisites():
 
     prompt = ChatPromptTemplate.from_template(Prompts.prompt1())
     chain = prompt | llm | StrOutputParser()
-
+    print("same")
     return chain.invoke({
         "designation": "Psychiatrist"
     })
@@ -52,7 +52,7 @@ def agentPrerequisites():
 # ------------------------------------------------------------------
 def agent(question, id, counsellingID):
     llm = _get_llm()
-
+    print("agent")
     # -------- sanitize inputs --------
     question = question or ""
     id = id or ""
@@ -67,7 +67,7 @@ def agent(question, id, counsellingID):
         schedule_appointment
     ]
     llm_with_tools = llm.bind_tools(tools)
-
+    print("agent")
     # -------- extraction chain --------
     extract_prompt = ChatPromptTemplate.from_template(Prompts.prompt2())
     extract_chain = extract_prompt | llm_with_tools
@@ -179,6 +179,7 @@ def medicalReportAgent(id, counsellingID):
         "previousChat": history,
         "format_instructions": output_parser.get_format_instructions()
     })
+
 
 
 
