@@ -15,7 +15,7 @@ langchain-huggingface
 sentence-transformers
 
 # Vector DB
-pinecone-client
+pinecone
 
 # Utilities
 requests
@@ -30,3 +30,4 @@ reportlab
 
 # Data models
 pydantic
+
