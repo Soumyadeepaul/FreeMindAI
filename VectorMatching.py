@@ -1,46 +1,40 @@
+import streamlit as st
 from pinecone import Pinecone
 from langchain_huggingface import HuggingFaceEmbeddings
-from dotenv import load_dotenv
-import os
 
-load_dotenv()
+# -------------------------
+# Initialize Pinecone (once)
+# -------------------------
+pc = Pinecone(api_key=st.secrets["PINECONE_API_KEY"])
+index = pc.Index("my-index")
 
+# -------------------------
+# Initialize embedding model (once)
+# -------------------------
+embedder = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-mpnet-base-v2"
+)
 
-def vectorMatch(query):
-    
-    # -------------------------
-    # 1. Initialize Pinecone
-    # -------------------------
-    pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
-    index = pc.Index("my-index")
+def vectorMatch(query: str) -> str:
+    """
+    Takes a query string and returns concatenated top-3
+    matched context text from Pinecone.
+    """
 
-    # -------------------------
-    # 2. Embedding model
-    # -------------------------
-    embedder = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-mpnet-base-v2"
-    )
-
-    # -------------------------
-    # 3. Ask your query
-    # -------------------------
-    # query = "What is human behaviour?"   # <-- your question
-
+    # 1️⃣ Embed query
     q_vec = embedder.embed_query(query)
 
-    # -------------------------
-    # 4. Query Pinecone (top 3)
-    # -------------------------
+    # 2️⃣ Query Pinecone
     response = index.query(
         vector=q_vec,
         top_k=3,
         include_metadata=True
     )
 
-    # -------------------------
-    # 5. Print results
-    # -------------------------
-    result=""
-    for i, match in enumerate(response["matches"]):
-        result+=match["metadata"]["text"]+" "
-    return result
+    # 3️⃣ Collect matched text
+    result = ""
+    for match in response.get("matches", []):
+        if "metadata" in match and "text" in match["metadata"]:
+            result += match["metadata"]["text"] + " "
+
+    return result.strip()
