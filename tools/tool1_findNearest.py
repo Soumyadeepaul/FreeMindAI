@@ -3,7 +3,11 @@ from geopy.distance import geodesic
 from langchain.tools import tool
 
 @tool
-def findNearestPsychiatrists(lat : float, lng : float, limit=None) -> list:
+def findNearestPsychiatrists(
+    lat: float,
+    lng: float,
+    limit: Optional[int] = 3
+) -> list:
     if limit==None:
         limit=3
     #doc script -> must there for tools
@@ -47,4 +51,5 @@ def findNearestPsychiatrists(lat : float, lng : float, limit=None) -> list:
 
 # psy = findNearestPsychiatrists(22.5726, 88.3639)  # Kolkata
 # print(psy)
+
 
