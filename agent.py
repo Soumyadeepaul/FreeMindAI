@@ -79,15 +79,22 @@ def agent(question, id, counsellingID):
         "counsellingID": "1",
         "dateTime": "2025-12-27 22:12"
     })
+    print(id)
+    print(extracted)
+    # Detect tool calls
+    tool_calls = []
+    if hasattr(extracted, "tool_calls") and extracted.tool_calls:
+        tool_calls = extracted.tool_calls
+    else:
+        tool_calls = extracted.additional_kwargs.get("tool_calls", [])
 
-    # ------------------------------------------------------------------
-    # TOOL CALL HANDLING (LANGCHAIN SAFE)
-    # ------------------------------------------------------------------
-    tool_calls = extracted.additional_kwargs.get("tool_calls", [])
+    tool_result = None
+    print(tool_calls)
 
+    # -------------------------------------------------------------------
+    # 1️⃣ TOOL MODE — LLM decided to call findNearestPsychiatrists
+    # -------------------------------------------------------------------
     if tool_calls:
-        tool_result = None
-
         for call in tool_calls:
             name = call["name"]
             args = call["args"]
@@ -99,6 +106,7 @@ def agent(question, id, counsellingID):
             elif name == "schedule_appointment":
                 tool_result = schedule_appointment.invoke(args)
 
+        # Take tool result → convert to friendly message using prompt4
         qa_prompt = ChatPromptTemplate.from_template(Prompts.prompt4())
         tool_chain = qa_prompt | llm | StrOutputParser()
 
@@ -108,33 +116,38 @@ def agent(question, id, counsellingID):
             "designation": "Psychiatrist"
         })
 
+        # Save conversation
         append_message(id, counsellingID, "user", question)
         append_message(id, counsellingID, "agent", final_answer)
 
         return final_answer
 
-    # ------------------------------------------------------------------
-    # NORMAL CHAT MODE (NO TOOL)
-    # ------------------------------------------------------------------
-    issue_text = extracted.content[0]["text"].strip()
+    # -------------------------------------------------------------------
+    # 2️⃣ NORMAL MODE — LLM did NOT call tool
+    # The LLM only returns a plain psychological issue string.
+    # -------------------------------------------------------------------
+    else:
+        # Gemini content always looks like: [{"type":"text","text":"..."}]
+        issue_text = extracted.content[0]["text"].strip()
 
-    context = VectorMatching.vectorMatch(issue_text)
-    history = get_conversation(id, counsellingID)
+        # Vector match
+        top3match = VectorMatching.vectorMatch(issue_text)
+        previousChat = get_conversation(id,counsellingID)
 
-    qa_prompt = ChatPromptTemplate.from_template(Prompts.prompt3())
-    qa_chain = qa_prompt | llm | StrOutputParser()
+        qa_prompt = ChatPromptTemplate.from_template(Prompts.prompt3())
+        qa_chain = qa_prompt | llm | StrOutputParser()
 
-    final_answer = qa_chain.invoke({
-        "designation": "Psychiatrist",
-        "history": history,
-        "question": question,
-        "context": context
-    })
+        final_answer = qa_chain.invoke({
+            "designation": "Psychiatrist",
+            "history": previousChat,
+            "question": question,
+            "context": top3match
+        })
 
-    append_message(id, counsellingID, "user", question)
-    append_message(id, counsellingID, "agent", final_answer)
+        append_message(id,counsellingID, "user", question)
+        append_message(id,counsellingID, "agent", final_answer)
 
-    return final_answer
+        return final_answer
 
 
 # ------------------------------------------------------------------
@@ -166,5 +179,6 @@ def medicalReportAgent(id, counsellingID):
         "previousChat": history,
         "format_instructions": output_parser.get_format_instructions()
     })
+
 
 
