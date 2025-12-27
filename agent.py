@@ -116,7 +116,7 @@ def agent(question, id, counsellingID):
     # ------------------------------------------------------------------
     # NORMAL CHAT MODE (NO TOOL)
     # ------------------------------------------------------------------
-    issue_text = extracted.content.strip()
+    issue_text = extracted.content[0]["text"].strip()
 
     context = VectorMatching.vectorMatch(issue_text)
     history = get_conversation(id, counsellingID)
@@ -166,4 +166,5 @@ def medicalReportAgent(id, counsellingID):
         "previousChat": history,
         "format_instructions": output_parser.get_format_instructions()
     })
+
 
