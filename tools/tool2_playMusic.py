@@ -1,28 +1,26 @@
-import webbrowser
 from langchain.tools import tool
 from typing import Optional
+
 @tool
-def play_spotify_music(query: Optional[str] = "") ->dict:
-    
+def play_spotify_music(query: Optional[str] = "") -> dict:
     """
-    Opens Spotify with the given search query or Spotify URL.
-    Example inputs:
-        - "lofi chill"
-        - "https://open.spotify.com/track/XYZ"
-        - "lofi beats playlist"
+    Returns a Spotify URL for the given song or playlist.
     """
+
     if not query:
-        return "No song selected"
-    # If user passed a URL, open directly
+        return {
+            "status": "error",
+            "message": "No song selected"
+        }
+
+    # If already a Spotify URL
     if query.startswith("http"):
-        webbrowser.open(query)
-        return {"status": "success", "action": "opened_url", "query": query}
+        url = query
+    else:
+        url = "https://open.spotify.com/search/" + query.replace(" ", "%20")
 
-    # Otherwise open search page
-    search_url = "https://open.spotify.com/search/" + query.replace(" ", "%20")
-    webbrowser.open(search_url)
-    return {"status": "success", "action": "opened_search", "query": query}
-
-
-# play_spotify_music("Oh Khuda")
-
+    return {
+        "status": "success",
+        "spotify_url": url,
+        "message": f"Click the link to listen to {query}"
+    }
