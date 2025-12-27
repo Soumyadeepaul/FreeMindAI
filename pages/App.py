@@ -1,7 +1,6 @@
 import streamlit as st
 import agent as agent
 from chat_db import get_all_counselling_ids
-import os
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
@@ -9,8 +8,8 @@ st.set_page_config(
     page_icon="logo.png",
     layout="wide"
 )
+
 # Hide pages from sidebar
-st.set_page_config()
 st.markdown("""
 <style>
 [data-testid="stSidebarNav"] ul li:has(a[href*="Auth"]) {
@@ -67,16 +66,14 @@ st.session_state["counsellingID"] = st.session_state.get("active_counselling")
 
 if st.session_state.sidebar_open:
 
-    # ---- Profile ----
     st.sidebar.markdown("### 👤 Profile")
     st.sidebar.write(st.session_state.get("user", "Unknown User"))
 
     st.sidebar.divider()
 
-    # ---- Counselling Sessions ----
     st.sidebar.markdown("### 🧠 Counselling Sessions")
-
     client_id = st.session_state["id"]
+
     if not st.session_state.counselling_sessions:
         st.session_state.counselling_sessions = get_all_counselling_ids(client_id)
 
@@ -93,7 +90,6 @@ if st.session_state.sidebar_open:
     else:
         st.sidebar.caption("No counselling yet")
 
-    # ---- New Counselling ----
     if st.sidebar.button("➕ New Counselling", use_container_width=True):
         st.session_state.counselling_sessions.append("started")
         st.session_state.active_counselling = len(st.session_state.counselling_sessions)
@@ -102,10 +98,8 @@ if st.session_state.sidebar_open:
 
     st.sidebar.divider()
 
-    # ---- Logout ----
+    # 🔧 FIX: session-only logout (no file access)
     if st.sidebar.button("🚪 Logout", use_container_width=True):
-        if os.path.exists(".freemind_auth"):
-            os.remove(".freemind_auth")
         st.session_state.clear()
         st.switch_page("Home.py")
 
@@ -133,7 +127,25 @@ if user_input:
         st.session_state.active_counselling
     )
 
-    st.session_state.messages.append(
-        {"role": "assistant", "content": bot_reply}
-    )
-    st.chat_message("assistant").write(bot_reply)
+    # 🔧 FIX: handle music tool result
+    if isinstance(bot_reply, dict) and bot_reply.get("status") == "success":
+        song = bot_reply.get("song", "")
+        url = bot_reply.get("url", "")
+
+        msg = f"🎵 Recommended Song: {song}"
+        st.session_state.messages.append(
+            {"role": "assistant", "content": msg}
+        )
+
+        st.chat_message("assistant").markdown(
+            f"""
+            🎵 **Recommended Song:** {song}  
+            <a href="{url}" target="_blank">▶ Open on Spotify</a>
+            """,
+            unsafe_allow_html=True
+        )
+    else:
+        st.session_state.messages.append(
+            {"role": "assistant", "content": bot_reply}
+        )
+        st.chat_message("assistant").write(bot_reply)
