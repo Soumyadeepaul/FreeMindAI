@@ -74,10 +74,10 @@ def agent(question, id, counsellingID):
 
     extracted = extract_chain.invoke({
         "designation": "Psychiatrist",
-        "question": "HI i am fine",
-        "email": "paulsoumyadeep344@gmail.com",
-        "counsellingID": "1",
-        "dateTime": "2025-12-27 22:12"
+        "question": question,
+        "email": id,
+        "counsellingID": counsellingID,
+        "dateTime": date_time
     })
     print(id)
     print(extracted)
@@ -179,6 +179,7 @@ def medicalReportAgent(id, counsellingID):
         "previousChat": history,
         "format_instructions": output_parser.get_format_instructions()
     })
+
 
 
 
