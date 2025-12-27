@@ -4,12 +4,9 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 from ics import Calendar, Event
-from dotenv import load_dotenv
-import os
 from langchain.tools import tool
 import streamlit as st
-
-load_dotenv()
+from typing import Optional
 
 
 def get_email_credentials():
@@ -20,14 +17,17 @@ def get_email_credentials():
 
 @tool
 def schedule_appointment(
-    user_id: str,
-    counselling_id: str,
-    start_time: str,
-    end_time: str
+    user_id: Optional[str] = "",
+    counselling_id: Optional[str] = "",
+    start_time: Optional[str] = "",
+    end_time: Optional[str] = ""
 ):
+   
     """
     Schedule a counselling appointment and send a calendar invite email.
     """
+     if not user_id or not start_time:
+        return "Unable to schedule appointment"
 
     # ---- Create ICS ----
     FROM_EMAIL, APP_PASSWORD = get_email_credentials()
@@ -71,3 +71,4 @@ def schedule_appointment(
         server.send_message(msg)
 
     return "Appointment email sent successfully, appointment date and time starts from {start_time} and ends at {end_time}"
+
