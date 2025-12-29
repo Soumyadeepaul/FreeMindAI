@@ -43,6 +43,8 @@ if id is None or counsellingID is None:
 # ---------------- GENERATE REPORT ----------------
 report = agent.medicalReportAgent(id, counsellingID)
 
+print(report)
+
 # ---------------- PATIENT NAME ----------------
 st.markdown("### Patient Name")
 if report.patient:
@@ -73,3 +75,4 @@ st.download_button(
     file_name="FreeMindAI_Medical_Report.pdf",
     mime="application/pdf"
 )
+
