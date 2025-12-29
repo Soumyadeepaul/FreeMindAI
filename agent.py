@@ -78,6 +78,7 @@ def agent(question, id, counsellingID):
         "counsellingID": counsellingID,
         "dateTime": date_time
     })
+    print(extracted)
 
     # -------- detect tool calls (SAFE) --------
     tool_calls = extracted.additional_kwargs.get("tool_calls", [])
@@ -181,5 +182,6 @@ def medicalReportAgent(id, counsellingID):
         "previousChat": history,
         "format_instructions": output_parser.get_format_instructions()
     })
+
 
 
