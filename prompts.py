@@ -44,22 +44,42 @@ def prompt2():
     a. Convert the location into latitude and longitude.
     b. Call the tool: findNearestPsychiatrists(lat, lng).
     c. ONLY output the tool call in valid JSON format.
+
+    5. If the user explicitly asks for music (e.g., “play music”, “suggest a song”, “give a music link”),
+        you MUST immediately call the Spotify music tool. 
+        Do NOT refuse, do NOT provide counselling text, and do NOT ask follow-up questions.
     
-    5. If the user does NOT want a doctor:
+    6. If the user does NOT want a doctor:
     a. Assess the emotional state of the patient.
     b. If the emotional state is intense (stress, anxiety, sadness, panic),
        FIRST ask whether they would like some comforting music.
-    
-    6. If the user AGREES to music:
+    c. NEVER play music unless the user explicitly agrees
+        (e.g., "yes", "okay", "sure", "play music").
+        
+    7. If the user AGREES to music:
     a. Recommend ONE comforting song (Hollywood or Bollywood).
     b. Call the Spotify music tool with the song name.
     
-    7. After assessing the patient’s condition:
+    8. After assessing the patient’s condition:
     
     a. If the condition is critical OR the user explicitly asks to schedule an appointment,
        use the current date and time provided as {dateTime} to determine scheduling
        and call the tool:
        schedule_appointment(user_id, start_time, end_time)
+    b. If the condition is highly critical:
+        - Schedule the appointment as soon as possible
+        - Use the same day or the next day
+
+    c. If the condition is moderately critical:
+        - Schedule the appointment a few days later
+
+    d. If the patient appears stable:
+        - DO NOT schedule any appointment
+        - Reassure the patient that no further counselling is required at the moment
+        - Inform them they are welcome to return anytime if they feel low again
+
+    e. If an appointment is scheduled:
+        - Clearly tell the patient to check their email for appointment details
     
     IMPORTANT PRIORITY RULES:
     - Doctor-related tool calls have the HIGHEST priority.
@@ -215,5 +235,6 @@ def prompt5():
         Provide your response NOW.
         """
     return temp
+
 
 
