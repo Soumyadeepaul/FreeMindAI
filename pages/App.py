@@ -102,24 +102,45 @@ if st.session_state.sidebar_open:
         st.session_state.clear()
         st.switch_page("main.py")
 
-# ---------------- COUNSELLING INFO POPUP ----------------
+# ---------------- COUNSELLING INFO POPUP ---------------
 if st.session_state.show_counselling_popup:
 
-    with st.dialog("Counselling Information"):
-        st.markdown(
-            """
-            ### 🧠 Continue Your Counselling
+    st.markdown(
+        """
+        <div style="
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        ">
+            <div style="
+                background: white;
+                padding: 30px;
+                border-radius: 12px;
+                width: 420px;
+                text-align: center;
+            ">
+                <h3>🧠 Continue Your Counselling</h3>
+                <p>
+                If you already have a counselling session scheduled,  
+                please continue using the counselling section in the sidebar.
+                </p>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-            If you already have a counselling session scheduled,  
-            please **continue using the counselling section in the sidebar**.
-
-            You may also start a **new counselling session** if needed.
-            """
-        )
-
-        if st.button("✔ Got it, continue"):
+    col1, col2, col3 = st.columns([2, 3, 2])
+    with col2:
+        if st.button("✔ Got it, continue", use_container_width=True):
             st.session_state.show_counselling_popup = False
             st.rerun()
+
 
 if "init_done" not in st.session_state:
     bot_reply = agent.agentPrerequisites()
@@ -175,6 +196,7 @@ if user_input:
             {"role": "assistant", "content": bot_reply}
         )
         st.chat_message("assistant").write(bot_reply)
+
 
 
 
