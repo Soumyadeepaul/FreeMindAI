@@ -37,13 +37,14 @@ if "counselling_sessions" not in st.session_state:
     st.session_state.counselling_sessions = []
 
 if "current_counselling_started" not in st.session_state:
-    st.session_state.current_counselling_started = False
+    st.session_state.current_counselling_started = True
 
-if "active_counselling" not in st.session_state:
-    st.session_state.active_counselling = None
-    
-if "agent_ready" not in st.session_state:
-    st.session_state.agent_ready = False
+if "init_done" not in st.session_state:
+    bot_reply = agent.agentPrerequisites()
+    st.session_state.messages.append(
+        {"role": "assistant", "content": bot_reply}
+    )
+    st.session_state.init_done = True
 
 
 # ---------------- POPUP STATE ----------------
@@ -106,59 +107,6 @@ if st.session_state.sidebar_open:
         st.session_state.clear()
         st.switch_page("main.py")
 
-# ---------------- COUNSELLING INFO POPUP ----------------
-if st.session_state.show_counselling_popup:
-
-    st.markdown(
-        """
-        <div style="
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        ">
-            <div style="
-                background: white;
-                padding: 30px;
-                border-radius: 12px;
-                width: 420px;
-                text-align: center;
-            ">
-                <h3>🧠 Continue Your Counselling</h3>
-                <p>
-                If you already have a counselling session scheduled,<br>
-                please continue using the counselling section in the sidebar.
-                </p>
-                <div id="popup-btn"></div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # Render button exactly where placeholder is
-    popup_btn = st.container()
-    with popup_btn:
-        if st.button("✔ Got it, continue", key="popup_continue", use_container_width=True):
-            st.session_state.show_counselling_popup = False
-            st.session_state.agent_ready = True
-            st.rerun()
-
-
-
-
-if st.session_state.agent_ready and "init_done" not in st.session_state:
-    bot_reply = agent.agentPrerequisites()
-    st.session_state.messages.append(
-        {"role": "assistant", "content": bot_reply}
-    )
-    st.session_state.init_done = True
-
-
 
 # ---------------- CHAT UI ----------------
 for msg in st.session_state.messages:
@@ -206,6 +154,7 @@ if user_input:
             {"role": "assistant", "content": bot_reply}
         )
         st.chat_message("assistant").write(bot_reply)
+
 
 
 
