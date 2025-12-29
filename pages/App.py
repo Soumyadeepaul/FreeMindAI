@@ -37,7 +37,7 @@ if "counselling_sessions" not in st.session_state:
     st.session_state.counselling_sessions = []
 
 if "current_counselling_started" not in st.session_state:
-    st.session_state.current_counselling_started = True
+    st.session_state.current_counselling_started = False
 
 if "init_done" not in st.session_state:
     bot_reply = agent.agentPrerequisites()
@@ -154,6 +154,7 @@ if user_input:
             {"role": "assistant", "content": bot_reply}
         )
         st.chat_message("assistant").write(bot_reply)
+
 
 
 
