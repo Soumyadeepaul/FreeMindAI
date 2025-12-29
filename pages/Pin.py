@@ -32,7 +32,7 @@ def hash_value(v):
 
 # Guard
 if "pending_user" not in st.session_state:
-    st.switch_page("c:\MTech\LLM Project\Main.py")
+    st.switch_page("main.py")
 
 conn = sqlite3.connect("users.db", check_same_thread=False)
 c = conn.cursor()
@@ -55,3 +55,4 @@ if st.button("Verify PIN"):
         st.switch_page("pages/App.py")
     else:
         st.error("Invalid PIN")
+
