@@ -41,6 +41,10 @@ if "current_counselling_started" not in st.session_state:
 
 if "active_counselling" not in st.session_state:
     st.session_state.active_counselling = None
+    
+if "agent_ready" not in st.session_state:
+    st.session_state.agent_ready = False
+
 
 # ---------------- POPUP STATE ----------------
 if "show_counselling_popup" not in st.session_state:
@@ -102,7 +106,7 @@ if st.session_state.sidebar_open:
         st.session_state.clear()
         st.switch_page("main.py")
 
-# ---------------- COUNSELLING INFO POPUP ---------------
+# ---------------- COUNSELLING INFO POPUP ----------------
 if st.session_state.show_counselling_popup:
 
     st.markdown(
@@ -118,7 +122,7 @@ if st.session_state.show_counselling_popup:
             justify-content: center;
         ">
             <div style="
-                background: black;
+                background: white;
                 padding: 30px;
                 border-radius: 12px;
                 width: 420px;
@@ -126,28 +130,34 @@ if st.session_state.show_counselling_popup:
             ">
                 <h3>🧠 Continue Your Counselling</h3>
                 <p>
-                If you already have a counselling session scheduled,  
+                If you already have a counselling session scheduled,<br>
                 please continue using the counselling section in the sidebar.
                 </p>
+                <div id="popup-btn"></div>
             </div>
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    col1, col2, col3 = st.columns([2, 3, 2])
-    with col2:
-        if st.button("✔ Got it, continue", use_container_width=True):
+    # Render button exactly where placeholder is
+    popup_btn = st.container()
+    with popup_btn:
+        if st.button("✔ Got it, continue", key="popup_continue", use_container_width=True):
             st.session_state.show_counselling_popup = False
+            st.session_state.agent_ready = True
             st.rerun()
 
 
-if "init_done" not in st.session_state:
+
+
+if st.session_state.agent_ready and "init_done" not in st.session_state:
     bot_reply = agent.agentPrerequisites()
     st.session_state.messages.append(
         {"role": "assistant", "content": bot_reply}
     )
     st.session_state.init_done = True
+
 
 
 # ---------------- CHAT UI ----------------
@@ -196,6 +206,7 @@ if user_input:
             {"role": "assistant", "content": bot_reply}
         )
         st.chat_message("assistant").write(bot_reply)
+
 
 
 
