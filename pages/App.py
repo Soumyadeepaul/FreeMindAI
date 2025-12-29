@@ -21,31 +21,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-/* USER message bubble */
-div[data-testid="stChatMessage"][data-message-author-role="user"] {
-    background-color: #DCF8C6;  /* light green */
-    border-radius: 12px;
-    padding: 10px;
-    margin: 6px 0;
-}
-
-/* ASSISTANT message bubble */
-div[data-testid="stChatMessage"][data-message-author-role="assistant"] {
-    background-color: #F1F3F6;  /* light grey */
-    border-radius: 12px;
-    padding: 10px;
-    margin: 6px 0;
-}
-
-/* Optional: tighten text spacing */
-div[data-testid="stChatMessage"] p {
-    margin: 0;
-}
-</style>
-""", unsafe_allow_html=True)
-
 
 # ---------------- AUTH GUARD ----------------
 if "user" not in st.session_state:
@@ -180,6 +155,7 @@ if user_input:
             {"role": "assistant", "content": bot_reply}
         )
         st.chat_message("assistant").write(bot_reply)
+
 
 
 
