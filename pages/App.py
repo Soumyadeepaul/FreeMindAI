@@ -23,7 +23,7 @@ st.markdown("""
 
 # ---------------- AUTH GUARD ----------------
 if "user" not in st.session_state:
-    st.switch_page("Home.py")
+    st.switch_page("main.py")
 
 # ---------------- SESSION STATES ----------------
 if "sidebar_open" not in st.session_state:
@@ -149,3 +149,4 @@ if user_input:
             {"role": "assistant", "content": bot_reply}
         )
         st.chat_message("assistant").write(bot_reply)
+
