@@ -118,7 +118,7 @@ if st.session_state.show_counselling_popup:
             justify-content: center;
         ">
             <div style="
-                background: white;
+                background: black;
                 padding: 30px;
                 border-radius: 12px;
                 width: 420px;
@@ -196,6 +196,7 @@ if user_input:
             {"role": "assistant", "content": bot_reply}
         )
         st.chat_message("assistant").write(bot_reply)
+
 
 
 
