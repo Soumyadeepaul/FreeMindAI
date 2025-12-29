@@ -101,7 +101,7 @@ if st.session_state.sidebar_open:
     # 🔧 FIX: session-only logout (no file access)
     if st.sidebar.button("🚪 Logout", use_container_width=True):
         st.session_state.clear()
-        st.switch_page("Home.py")
+        st.switch_page("main.py")
 
 # ---------------- CHAT UI ----------------
 for msg in st.session_state.messages:
@@ -149,4 +149,5 @@ if user_input:
             {"role": "assistant", "content": bot_reply}
         )
         st.chat_message("assistant").write(bot_reply)
+
 
