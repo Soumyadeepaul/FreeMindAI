@@ -32,12 +32,6 @@ if "sidebar_open" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-if "init_done" not in st.session_state:
-    bot_reply = agent.agentPrerequisites()
-    st.session_state.messages.append(
-        {"role": "assistant", "content": bot_reply}
-    )
-    st.session_state.init_done = True
 
 if "counselling_sessions" not in st.session_state:
     st.session_state.counselling_sessions = []
@@ -127,6 +121,13 @@ if st.session_state.show_counselling_popup:
             st.session_state.show_counselling_popup = False
             st.rerun()
 
+if "init_done" not in st.session_state:
+    bot_reply = agent.agentPrerequisites()
+    st.session_state.messages.append(
+        {"role": "assistant", "content": bot_reply}
+    )
+    st.session_state.init_done = True
+
 
 # ---------------- CHAT UI ----------------
 for msg in st.session_state.messages:
@@ -174,6 +175,7 @@ if user_input:
             {"role": "assistant", "content": bot_reply}
         )
         st.chat_message("assistant").write(bot_reply)
+
 
 
 
