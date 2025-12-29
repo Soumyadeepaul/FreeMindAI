@@ -49,8 +49,6 @@ def prompt2():
     a. Assess the emotional state of the patient.
     b. If the emotional state is intense (stress, anxiety, sadness, panic),
         FIRST ask whether they would like some comforting music.
-    c. NEVER play music unless the user explicitly agrees
-        (e.g., "yes", "okay", "sure", "play music").
 
     6. If the user AGREES to music:
     a. Recommend ONE comforting song (Hollywood or Bollywood).
@@ -230,3 +228,4 @@ def prompt5():
         Provide your response NOW.
         """
     return temp
+
