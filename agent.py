@@ -82,8 +82,14 @@ def agent(question, id, counsellingID):
     print(extracted)
 
     # -------- detect tool calls (SAFE) --------
-    tool_calls = extracted.additional_kwargs.get("tool_calls", [])
+    tool_calls = []
+    if hasattr(extracted, "tool_calls") and extracted.tool_calls:
+        tool_calls = extracted.tool_calls
+    else:
+        tool_calls = extracted.additional_kwargs.get("tool_calls", [])
+
     tool_result = None
+    print(tool_calls)
 
     # -------------------------------------------------------------------
     # 1️⃣ TOOL MODE
@@ -133,7 +139,7 @@ def agent(question, id, counsellingID):
     # -------------------------------------------------------------------
     else:
         # 🔧 FIXED Gemini extraction
-        issue_text = extracted.content.strip()
+        issue_text = extracted.content[0]["text"].strip()
 
         top3match = VectorMatching.vectorMatch(issue_text)
         previousChat = get_conversation(id, counsellingID)
@@ -183,6 +189,7 @@ def medicalReportAgent(id, counsellingID):
         "previousChat": history,
         "format_instructions": output_parser.get_format_instructions()
     })
+
 
 
 
