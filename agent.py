@@ -41,6 +41,7 @@ def agentPrerequisites():
 
     prompt = ChatPromptTemplate.from_template(Prompts.prompt1())
     chain = prompt | llm | StrOutputParser()
+    print("SAME")
 
     return chain.invoke({
         "designation": "Psychiatrist"
@@ -182,6 +183,7 @@ def medicalReportAgent(id, counsellingID):
         "previousChat": history,
         "format_instructions": output_parser.get_format_instructions()
     })
+
 
 
 
