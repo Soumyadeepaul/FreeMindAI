@@ -48,6 +48,11 @@ if "current_counselling_started" not in st.session_state:
 if "active_counselling" not in st.session_state:
     st.session_state.active_counselling = None
 
+# ---------------- POPUP STATE ----------------
+if "show_counselling_popup" not in st.session_state:
+    st.session_state.show_counselling_popup = True
+
+
 # ---------------- HEADER ----------------
 col1, col2 = st.columns([1, 6])
 
@@ -103,6 +108,26 @@ if st.session_state.sidebar_open:
         st.session_state.clear()
         st.switch_page("main.py")
 
+# ---------------- COUNSELLING INFO POPUP ----------------
+if st.session_state.show_counselling_popup:
+
+    with st.dialog("Counselling Information"):
+        st.markdown(
+            """
+            ### 🧠 Continue Your Counselling
+
+            If you already have a counselling session scheduled,  
+            please **continue using the counselling section in the sidebar**.
+
+            You may also start a **new counselling session** if needed.
+            """
+        )
+
+        if st.button("✔ Got it, continue"):
+            st.session_state.show_counselling_popup = False
+            st.rerun()
+
+
 # ---------------- CHAT UI ----------------
 for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
@@ -149,5 +174,6 @@ if user_input:
             {"role": "assistant", "content": bot_reply}
         )
         st.chat_message("assistant").write(bot_reply)
+
 
 
