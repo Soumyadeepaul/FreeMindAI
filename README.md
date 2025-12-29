@@ -46,27 +46,8 @@ Run as a multi-page Streamlit web application
 Be deployed as a complete product
 
 🧱 System Architecture (High Level)
-User
- │
- ▼
-Streamlit UI (Multi-page App)
- │
- ▼
-Agent Controller (LangChain)
- │
- ├─ LLM (Reasoning + Decision Making)
- ├─ Memory (Conversation + Counselling Context)
- ├─ RAG (Past Counselling Records)
- ├─ Tool Router
- │     ├─ Psychiatrist Finder Tool
- │     ├─ Appointment Scheduler Tool
- │     └─ Other Support Tools
- │
- ▼
-Response Generator
- │
- ▼
-PDF Generator / UI Output
+<img width="462" height="641" alt="image" src="https://github.com/user-attachments/assets/ea85bd48-0aa7-4385-afca-c889d6427897" />
+
 
 🔄 Workflow (Step-by-Step)
 User Login
@@ -106,23 +87,8 @@ Feedback Collection
 User can submit feedback after session
 
 🔁 Data Flow
-User Input
-  ↓
-Streamlit UI
-  ↓
-Agent Prompt Builder
-  ↓
-LLM (Reasoning)
-  ↓
-Memory / RAG (Optional)
-  ↓
-Tool Invocation (Optional)
-  ↓
-Final Response
-  ↓
-UI Display + Data Storage
-  ↓
-Medical Report (PDF)
+<img width="273" height="535" alt="image" src="https://github.com/user-attachments/assets/6058fcae-1b5e-433f-b70f-9b0a0ff1fa18" />
+
 
 🧠 Agent Design (Important)
 
